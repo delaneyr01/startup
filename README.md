@@ -17,5 +17,5 @@ Take control of your schedule with our intuitive planner website. View assignmen
 
 ## Design Images
 
-![Image 1](/Users/delaneyreed/Desktop/startup/design_images/Startup_Calendar_View.JPG)
-![Image 2](/Users/delaneyreed/Desktop/startup/design_images/Startup_Weekly_View.JPG)
+![Calendar View](/Users/delaneyreed/Desktop/startup/design_images/Startup_Calendar_View.JPG)
+![Weekly View](/Users/delaneyreed/Desktop/startup/design_images/Startup_Weekly_View.JPG)
