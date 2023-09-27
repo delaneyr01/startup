@@ -13,7 +13,7 @@ Take control of your schedule with our intuitive planner website. View assignmen
 
 - Authentication: Email and password
 - Database: Class assignments/schedule
-- WebSocket data: Creating a new event/assignment
+- WebSocket data: Creating a new event/assignment. Be able to tag someone else's account in an event (Example: Lunch with Jack) and send them a notification.
 
 ## Design Images
 
