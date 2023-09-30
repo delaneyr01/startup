@@ -21,4 +21,4 @@ Take control of your schedule with our intuitive planner website. View assignmen
 ![Weekly View](/Users/delaneyreed/Desktop/startup/design_images/Startup_Weekly_View.JPG)
 
 ## HTML Updates (9-30)
-In this update, I have added a month page where you can view your schedule at a month view, a week page where you can view your schedule at a week view with hourly time slots, and a theme page in which you can select the color of the page (this is not yet functioning without CSS). The index page also has a place to log in to access your schedule, a link to the rest of the pages, and a link to my GitHub.
+In this update, I have added a month page where you can view your schedule at a month view, a week page where you can view your schedule at a week view with hourly time slots, and a theme page in which you can select the color of the page (this is not yet functioning without CSS). The index page also has a place to log in to access your schedule, a link to the rest of the pages, and a link to my GitHub. I also added a new icon for the tab.
