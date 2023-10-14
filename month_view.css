@@ -1,0 +1,45 @@
+/* main.css */
+
+/* Styles for all <th> elements */
+th {
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    background: none; /* Remove the background property */
+}
+
+/* Styles for <th> elements with the class "day-label" */
+th.day-label {
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    background: none; /* Remove the background property */
+}
+
+/* Styles for the entire table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    color: white; /* Set the text color to white */
+}
+
+/* Styles for each cell in the table */
+td {
+    width: 50px;
+    height: 50px;
+    background-color: transparent; /* Set the background to transparent */
+    transition: background-color 0.3s ease-in-out;
+    position: relative;
+}
+
+td:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+td span {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    color: white; /* Set the text color to white */
+}
