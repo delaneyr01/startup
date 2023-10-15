@@ -1,21 +1,16 @@
 /* main.css */
 
-/* Styles for all <th> elements */
-th {
-    font-weight: bold;
-    text-align: center;
-    color: white;
-    background: none; /* Remove the background property */
-}
-
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background: linear-gradient(to bottom right, #ff8a00, #e52e71);
-}
-
-/*Skej at the top left*/
+    background-attachment: fixed; /* Ensures the background doesn't scroll */
+    background-size: cover; /* Covers the entire viewport */
+    background-repeat: no-repeat; /* No repeating of the background */
+    color: white;
+  }
+  /*Skej at the top left*/
 header {
     background-color: transparent;
     color: white;
@@ -46,30 +41,28 @@ nav menu li a {
 nav menu li a:hover {
     border-bottom: 2px solid white;
 }
-
-/*calendar background*/
-table {
-    width: 100%;
+  
+  table {
+    width: 50%;
     border-collapse: collapse;
-    margin-top: 20px;
-    background: transparent;
-}
-/* td is date numbers*/
-td {
-    width: 50px;
-    height: 50px;
-    color:white;
+    margin-bottom: 20px;
+  }
+  
+  th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  th {
     background-color: transparent;
-    transition: background-color 0.3s ease-in-out;
-    position: relative;
-}
-
-td:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-td span {
-    position: absolute;
-    top: 5px;
-    left: 5px;
-}
+  }
+  
+  a {
+    text-decoration: none;
+    color: white;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
