@@ -1,0 +1,34 @@
+/* theme.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to bottom right, var(--theme-color), #e52e71);
+    background-attachment: fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: white;
+  }
+  
+  h1 {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  input[type="color"] {
+    margin: 20px auto;
+    display: block;
+  }
+  
+  button {
+    display: block;
+    margin: 0 auto;
+    padding: 10px 20px;
+    font-size: 1.2em;
+  }
+  
+  button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+  }
