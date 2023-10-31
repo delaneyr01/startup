@@ -20,19 +20,8 @@
       </header>  
 <head>
     <link rel="stylesheet" href="month_view.css">
-    <label for="event">Add an Event: </label>
-        <input type="event" id="event" name="varEvent" placeholder="Your event here" pattern="\d{3}-\d{4}" />
-    <style>
-        table {
-            border-collapse: collapse;
-            color: black;
-        }
-          
-        th,
-        td {
-            font-weight: bold;
-        }
-    </style>
+    <script src="month_view.js"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
 </head>
   
 <body>
@@ -49,7 +38,29 @@
         October 2023
     </h2>
     <br />
-  
+    
+    <div class="col-sm-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>Add an Event</h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <input class="form-control" placeholder="Event Name" id="eventName">
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control" placeholder="Event Description" id="eventDescription"></textarea>
+                </div>
+                <div class="form-group">
+                    <input type="date" class="form-control" placeholder="Date" id="eventDate">
+                </div>
+                <button class="btn btn-primary" onclick="addEvent()">Submit</button>
+            </div>
+        </div>
+    </div>
+
+
+
     <table bgcolor="lightgrey" align="center" 
         cellspacing="21" cellpadding="21">
   
@@ -89,49 +100,140 @@
   
         <tbody>
             <tr>
-                <td><span>1</span></td>
-                <td><span>2</span></td>
-                <td><span>3</span></td>
-                <td><span>4</span></td>
-                <td><span>5</span></td>
-                <td><span>6</span></td>
-                <td><span>7</span></td>
-            </tr>
-            <tr></tr>
-            <tr>
-                <td><span>8</span></td>
-                <td><span>9</span></td>
-                <td><span>10</span></td>
-                <td><span>11</span></td>
-                <td><span>12</span></td>
-                <td><span>13</span></td>
-                <td><span>14</span></td>
-            </tr>
-            <tr>
-                <td><span>15</span></td>
-                <td><span>16</span></td>
-                <td><span>17</span></td>
-                <td><span>18</span></td>
-                <td><span>19</span></td>
-                <td><span>20</span></td>
-                <td><span>21</span></td>
-            </tr>
-            <tr>
-                <td><span>22</span></td>
-                <td><span>23</span></td>
-                <td><span>24</span></td>
-                <td><span>25</span></td>
-                <td><span>26</span></td>
-                <td><span>27</span></td>
-                <td><span>28</span></td>
+                <td data-date="2023-10-01">
+                    <span>1</span>
+                    <div class="event-placeholder"></div>
+                </td>
+                <td data-date="2023-10-02">
+                    <span>2</span>
+                    <div class="event-placeholder"></div>
+                </td>
+                <td data-date="2023-10-03">
+                    <span>3</span>
+                    <div class="event-placeholder"></div>
+                </td>
+                <td data-date="2023-10-04">
+                    <span>4</span>
+                    <div class="event-placeholder"></div>
+                </td>
+                <td data-date="2023-10-05">
+                    <span>5</span>
+                    <div class="event-placeholder"></div>
+                </td>
+                <td data-date="2023-10-06">
+                    <span>6</span>
+                    <div class="event-placeholder"></div>
+                </td>
+                <td data-date="2023-10-07">
+                    <span>7</span>
+                    <div class="event-placeholder"></div>
+                </td>
             </tr>
             <tr>
-                <td><span>29</span></td>
-                <td><span>30</span></td>
-                <td><span>31</span></td>
-
+                <td data-date="2023-10-08">
+                    <span>8</span>
+                    <div class="event-placeholder"></div>
+                </td>
+                <td data-date="2023-10-09">
+                    <span>9</span>
+                    <div class="event-placeholder"></div>
+                </td>
+                <td data-date="2023-10-10">
+                    <span>10</span>
+                    <div class="event-placeholder"></div>
+                </td>
+                <td data-date="2023-10-11">
+                    <span>11</span>
+                    <div class="event-placeholder"></div>
+                </td>
+                <td data-date="2023-10-12">
+                    <span>12</span>
+                    <div class="event-placeholder"></div>
+                </td>
+                <td data-date="2023-10-13">
+                    <span>13</span>
+                    <div class="event-placeholder"></div>
+                </td>
+                <td data-date="2023-10-14">
+                    <span>14</span>
+                    <div class="event-placeholder"></div>
+                </td>
+            </tr>
+            <tr>
+                <td data-date="2023-10-15">
+                    <span>15</span>
+                    <div class="event-placeholder"></div>
+                </td>
+                <td data-date="2023-10-16">
+                    <span>16</span>
+                    <div class="event-placeholder"></div>
+                </td>
+                <td data-date="2023-10-17">
+                    <span>17</span>
+                    <div class="event-placeholder"></div>
+                </td>
+                <td data-date="2023-10-18">
+                    <span>18</span>
+                    <div class="event-placeholder"></div>
+                </td>
+                <td data-date="2023-10-19">
+                    <span>19</span>
+                    <div class="event-placeholder"></div>
+                </td>
+                <td data-date="2023-10-20">
+                    <span>20</span>
+                    <div class="event-placeholder"></div>
+                </td>
+                <td data-date="2023-10-21">
+                    <span>21</span>
+                    <div class="event-placeholder"></div>
+                </td>
+            </tr>
+            <tr>
+                <td data-date="2023-10-22">
+                    <span>22</span>
+                    <div class="event-placeholder"></div>
+                </td>
+                <td data-date="2023-10-23">
+                    <span>23</span>
+                    <div class="event-placeholder"></div>
+                </td>
+                <td data-date="2023-10-24">
+                    <span>24</span>
+                    <div class="event-placeholder"></div>
+                </td>
+                <td data-date="2023-10-25">
+                    <span>25</span>
+                    <div class="event-placeholder"></div>
+                </td>
+                <td data-date="2023-10-26">
+                    <span>26</span>
+                    <div class="event-placeholder"></div>
+                </td>
+                <td data-date="2023-10-27">
+                    <span>27</span>
+                    <div class="event-placeholder"></div>
+                </td>
+                <td data-date="2023-10-28">
+                    <span>28</span>
+                    <div class="event-placeholder"></div>
+                </td>
+            </tr>
+            <tr>
+                <td data-date="2023-10-29">
+                    <span>29</span>
+                    <div class="event-placeholder"></div>
+                </td>
+                <td data-date="2023-10-30">
+                    <span>30</span>
+                    <div class="event-placeholder"></div>
+                </td>
+                <td data-date="2023-10-31">
+                    <span>31</span>
+                    <div class="event-placeholder"></div>
+                </td>
+            </tr>
                 
-            </tr>
         </tbody>
     </table>
 </body>
