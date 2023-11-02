@@ -1,22 +1,20 @@
-// Check if the user is logged in (you may have your own authentication logic)
-const userIsLoggedIn = /* Your authentication logic here, e.g., checking a user token, session, etc. */;
-
-// Get the element where you want to display the "Welcome!" message
+// Get the elements for the welcome message, name input, and login button
 const welcomeMessageElement = document.getElementById('welcome-message');
+const nameInput = document.getElementById('name');
+const loginButton = document.getElementById('login-button');
 
-// Function to display the "Welcome!" message
-function displayWelcomeMessage() {
-  welcomeMessageElement.textContent = 'Welcome!';
-}
+// Add an event listener to the login button
+loginButton.addEventListener('click', function (event) {
+  event.preventDefault(); // Prevent the form from submitting
 
-// Function to hide the "Welcome!" message
-function hideWelcomeMessage() {
-  welcomeMessageElement.textContent = '';
-}
+  const enteredName = nameInput.value;
 
-// Check if the user is logged in and display the message accordingly
-if (userIsLoggedIn) {
-  displayWelcomeMessage();
-} else {
-  hideWelcomeMessage();
-}
+  // Check if a name is entered
+  if (enteredName.trim() !== '') {
+    // Display the personalized welcome message
+    welcomeMessageElement.textContent = `Welcome, ${enteredName}!`;
+  } else {
+    // If no name is entered, show a generic welcome message
+    welcomeMessageElement.textContent = 'Welcome!';
+  }
+});
