@@ -39,3 +39,37 @@ function addEvent() {
         }
     });
 }
+
+function updateCalendar() {
+    // Get the current date
+    const currentDate = new Date();
+  
+    // Get the month and year
+    const currentMonth = currentDate.getMonth(); // 0-based (January is 0)
+    const currentYear = currentDate.getFullYear();
+  
+    // Get the element to display the current month and year
+    const currentMonthYearElement = document.getElementById('currentMonthYear');
+  
+    // Update the text to display the current month and year
+    const months = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+    currentMonthYearElement.textContent = months[currentMonth] + ' ' + currentYear;
+  
+    // Now, you can generate the calendar for the current month and year, adjusting the table as needed.
+    // You will need to write code to update the table cells for the days of the month.
+    // You can clear any existing events and populate the new events for the current month.
+  
+    // Example code to generate a new calendar (you'll need to adapt this to your needs):
+    const tableBody = document.querySelector('tbody');
+    // Clear the table
+    tableBody.innerHTML = '';
+  
+    // Add your code here to populate the table with the days of the current month
+    // You may also need to add event handling for date selection or navigation.
+  }
+  
+  // Call the function to initialize the calendar with the current month
+  updateCalendar();
