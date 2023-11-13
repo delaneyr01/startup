@@ -1,0 +1,27 @@
+{
+  "name": "checkmyskej",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "express": "^4.18.2",
+    "mongoose": "^6.2.10",
+    "ws": "^8.5.0"
+  },
+  "description": "Take control of your schedule with our intuitive planner website. View assignments with our interactive calendar. Switch to the weekly view to see your schedule by the hour! Personalize the planner by selecting a color theme and customizing to-do lists. With your life organized, you can make the most of every day!",
+  "version": "1.0.0",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/delaneyr01/startup.git"
+  },
+  "keywords": [],
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/delaneyr01/startup/issues"
+  },
+  "homepage": "https://github.com/delaneyr01/startup#readme"
+}
