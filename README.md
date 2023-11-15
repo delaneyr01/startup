@@ -22,3 +22,16 @@ Take control of your schedule with our intuitive planner website. View assignmen
 
 ## HTML Updates (9-30)
 In this update, I have added a month page where you can view your schedule at a month view, a week page where you can view your schedule at a week view with hourly time slots, and a theme page in which you can select the color of the page (this is not yet functioning without CSS). The index page also has a place to log in to access your schedule, a link to the rest of the pages, and a link to my GitHub. I also added a new icon for the tab. There is also a placeholder to add a new event, and in the future, you will be able to tag other accounts in that event. There is also an accounts page that will hold the accounts in the database.
+
+## CSS Updates (10-14)
+I have successfully deployed the simon-html and the simon-css files to the simon subdomain
+
+I added a color gradient on each of the pages and interactive-hover over elemtns in the month-view and week-view. I made the header nice and consistent for the pages and a place where you can pick the theme, but it won't be functional until I add JavaScript
+
+## JavaScript Updates (11-1)
+I have successfully deployed the simon-js files to the simon subdomain
+I made it possible to fill out an event form and add an event to the calendar on both the week view and month view pages. The theme page also allows you to select the theme, however I haven't gotten it to apply to the whole website yet.
+
+## Service Updates (11-15)
+Successfully deployed the simon-service files to the simon subdomain
+I created a web service that listens on a network port for HTTP requests for the startup domain
