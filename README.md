@@ -35,3 +35,6 @@ I made it possible to fill out an event form and add an event to the calendar on
 ## Service Updates (11-15)
 Successfully deployed the simon-service files to the simon subdomain
 I created a web service that listens on a network port for HTTP requests for the startup domain
+
+## Service Updates (11-28)
+I implemented client-side JavaScript functions for adding and displaying events on a calendar. Events are sent to the server using the addEventToServer function, and the loadEvents function retrieves and displays events from the server.
