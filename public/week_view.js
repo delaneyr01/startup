@@ -46,3 +46,59 @@ function addEvent() {
         });
     });
 }
+function formatDate(date){
+    var month = (date.getMonth() + 1).toString().padStart(2, '0');
+    var day = date.getDate().toString().padStart(2, '0');
+    return month + '-' + day;
+}
+function formatDataTag(currDate){
+    // Get year, month, and day
+    var year = currDate.getFullYear();
+    var month = (currDate.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based, so add 1
+    var day = currDate.getDate().toString().padStart(2, '0');
+    
+
+    // Create the formatted date string
+    return year + '-' + month + '-' + day;
+}
+function assignDates(){
+
+    // Days of the week
+    var daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+    // Current date
+    var currentDate = new Date();
+
+    // Loop through the days and set the text in the corresponding th element
+    var dataOfWeek = [];
+    for (var i = 0; i < daysOfWeek.length; i++) {
+        var thElement = document.getElementById('weekday-' + i);
+        if (thElement) {
+            // Calculate the date for the current day
+            var currentDayDate = new Date(currentDate);
+            currentDayDate.setDate(currentDate.getDate() - currentDate.getDay() + i);
+            // Set the text content of the <div> with the day and formatted date
+            thElement.firstChild.textContent = daysOfWeek[i] + ' ' + formatDate(currentDayDate);
+            dataOfWeek.push(formatDataTag(currentDayDate));
+        }
+    }
+
+    var timesOfDay = ["09-AM", "10-AM", "11-AM", "12-PM", "01-PM", "02-PM", "03-PM", "04-PM", "05-PM", "06-PM", "07-PM", "08-PM", "09-PM", "10-PM"];
+
+    for (var i = 0; i < 14; i++) {
+        // Dynamically construct the attribute selector for each time
+        var attributeSelector = 'td[data-time="' + timesOfDay[i] + '"]';
+    
+        // Select all <td> elements with the current time
+        var tdElements = document.querySelectorAll(attributeSelector);
+    
+        // Loop through each selected <td> element
+        tdElements.forEach(function(td, index) {
+            tdElements[i].setAttribute('data-date', dataOfWeek[i]);
+            // Access the <div> inside each <td>
+            var eventDiv = td.querySelector('.event-placeholder');
+
+            //eventDiv.textContent = dataOfWeek[index]; 
+      });
+    }
+}

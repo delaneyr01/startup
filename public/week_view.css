@@ -125,3 +125,9 @@ button:hover {
 .event-description.active {
     display: block;
 }
+
+th span {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+}

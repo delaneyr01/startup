@@ -1,4 +1,46 @@
+// Function to load events from the server
+async function loadEvents() {
+    try {
+        const response = await fetch('/api/events');
+        const events = await response.json();
+
+        displayEvents(events);
+    } catch (error) {
+        console.error('Error loading events:', error);
+    }
+}
+
+// Function to add an event to the server
+async function addEventToServer(eventName, eventDescription, eventDate) {
+    try {
+        const response = await fetch('/api/events', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name: eventName,
+                description: eventDescription,
+                date: eventDate,
+            }),
+        });
+
+        // Check if the request was successful (status code 2xx)
+        if (response.ok) {
+            // Reload events from the server after adding a new event
+            loadEvents();
+        } else {
+            // Handle error scenario if needed
+            console.error('Failed to add event:', response.status, response.statusText);
+        }
+    } catch (error) {
+        // Handle network errors or other issues
+        console.error('Error adding event:', error);
+    }
+}
+
 function addEvent() {
+    //TODO: fetch post method to my server into an array
     var eventName = document.getElementById('eventName').value;
     var eventDescription = document.getElementById('eventDescription').value;
     var eventDate = document.getElementById('eventDate').value;
@@ -43,33 +85,76 @@ function addEvent() {
 function updateCalendar() {
     // Get the current date
     const currentDate = new Date();
-  
+
     // Get the month and year
-    const currentMonth = currentDate.getMonth(); // 0-based (January is 0)
+    const currentMonth = currentDate.getMonth(); //(0 based)
+    const currentDay = currentDate.getDate();
     const currentYear = currentDate.getFullYear();
-  
+
+    //const dataTag = `${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}-${year.toString().padStart(2, '0')}`;
+
     // Get the element to display the current month and year
     const currentMonthYearElement = document.getElementById('currentMonthYear');
-  
+
     // Update the text to display the current month and year
     const months = [
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
     ];
-    currentMonthYearElement.textContent = months[currentMonth] + ' ' + currentYear;
-  
-    // Now, you can generate the calendar for the current month and year, adjusting the table as needed.
-    // You will need to write code to update the table cells for the days of the month.
-    // You can clear any existing events and populate the new events for the current month.
-  
-    // Example code to generate a new calendar (you'll need to adapt this to your needs):
-    const tableBody = document.querySelector('tbody');
-    // Clear the table
-    tableBody.innerHTML = '';
-  
-    // Add your code here to populate the table with the days of the current month
-    // You may also need to add event handling for date selection or navigation.
-  }
-  
-  // Call the function to initialize the calendar with the current month
-  updateCalendar();
+    currentMonthYearElement.innerText = months[currentMonth] + ' ' + currentYear;
+}
+
+function assignDates() {
+
+    var todaysDate = new Date();
+
+    // Get the current date
+    var firstOfMonth = new Date();
+
+    // Set the date to the first day of the month
+    firstOfMonth.setDate(1);
+    
+    // Get the day of the week (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
+    var firstDayOfWeek = firstOfMonth.getDay(); //This is to find what day of the week the first of the month falls on
+    
+    // Set the date to the last day of the month
+    var lastOfMonth = new Date();
+    lastOfMonth.setMonth(todaysDate.getMonth() + 1, 0);
+
+    // Get the day of the month (the last day of the current month)
+    var numberOfDays = lastOfMonth.getDate();
+
+     // Get all td elements in the table
+     var tdElements = document.getElementsByTagName('td');
+
+     // Loop through each td element
+     var dateCount = 1;
+     var currDate = new Date();
+     currDate.setDate(1);
+     for (var i = firstDayOfWeek; dateCount <= numberOfDays; i++) {
+        var spanElement = tdElements[i].querySelector('span');
+        spanElement.innerText = dateCount;
+
+
+        // Get year, month, and day
+        var year = currDate.getFullYear();
+        var month = (currDate.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based, so add 1
+        var day = currDate.getDate().toString().padStart(2, '0');
+        
+
+        // Create the formatted date string
+        var formattedDate = year + '-' + month + '-' + day;
+
+        //var formattedDate = getFormattedDate(currDate);
+        tdElements[i].setAttribute('data-date', formattedDate);
+        
+        currDate.setDate(dateCount + 1);
+        dateCount += 1;
+    }
+}
+
+function initializePage(){
+    updateCalendar();
+    assignDates();
+    loadEvents();
+}
