@@ -1,4 +1,4 @@
-[
+const data = [
     {
       _id: '62300f5316f7f58839c811de',
       name: 'Lovely Loft',
@@ -18,3 +18,5 @@
       price: 250,
     },
   ];
+
+  module.exports = data;
