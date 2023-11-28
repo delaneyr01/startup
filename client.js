@@ -1,20 +1,37 @@
-// client.js
-const welcomeMessageElement = document.getElementById('welcome-message');
-const nameInput = document.getElementById('name');
-const loginButton = document.getElementById('login-button');
+document.getElementById('loginForm').addEventListener('submit', function (event) {
+    event.preventDefault(); // Prevent the default form submission
 
-// Add an event listener to the login button
-loginButton.addEventListener('click', function (event) {
-  event.preventDefault(); // Prevent the form from submitting
+    const nameInput = document.getElementById('name');
+    const username = nameInput.value.trim();
 
-  const enteredName = nameInput.value;
+    if (username !== '') {
+        // Make an HTTP request to your server to add the username
+        addUsername(username)
+            .then(response => {
+                console.log('Username added successfully:', response);
+            })
+            .catch(error => {
+                console.error('Error adding username:', error);
+            });
 
-  // Check if a name is entered
-  if (enteredName.trim() !== '') {
-    // Display the personalized welcome message
-    welcomeMessageElement.textContent = `Welcome, ${enteredName}!`;
-  } else {
-    // If no name is entered, show a generic welcome message
-    welcomeMessageElement.textContent = 'Welcome!';
-  }
+        // Optionally, you can clear the input field after submission
+        nameInput.value = '';
+    }
 });
+
+// Function to make a POST request to add the username
+async function addUsername(username) {
+    const response = await fetch('/addUsername', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username }),
+    });
+
+    if (!response.ok) {
+        throw new Error(`Failed to add username. Status: ${response.status}`);
+    }
+
+    return response.json();
+}
