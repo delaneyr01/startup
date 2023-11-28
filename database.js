@@ -20,4 +20,9 @@ async function addUsername(username) {
   return result;
 }
 
-module.exports = {addUsername};
+async function getAllUsernames() {
+    const usernames = await usernameCollection.find().toArray();
+    return usernames.map(user => user.username); // Assuming the username field exists in your documents
+}
+
+module.exports = {addUsername, getAllUsernames};

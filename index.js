@@ -18,8 +18,9 @@ app.use(`/api`, apiRouter);
 // Sample array to store events (in-memory storage, replace with a database in production)
 let events = [];
 
-apiRouter.get('/events', (req, res) => {
-    res.json(events);
+apiRouter.get('/events', async (req, res) => {
+    const events = await DB.getAllUsernames();
+    res.send(events);
 });
 
 apiRouter.post('/events', (req, res) => {
