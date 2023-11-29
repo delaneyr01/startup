@@ -1,12 +1,21 @@
 const express = require('express');
+const { MongoClient } = require('mongodb');
+const bodyParser = require('body-parser');
 const app = express();
 const DB = require('./database.js');
 
+
 // The service port. In production the application is statically hosted by the service on the same port.
-const port = process.argv.length > 2 ? process.argv[2] : 3000;
+const port = 3000;
+
+const dbName = 'skejaccounts';
+const colName = 'usernames';
+const url = 'mongodb+srv://dr455:cs260password@checkmyskejcluster.q8gyzl2.mongodb.net/skejaccounts';
+
+app.use(bodyParser.json());
 
 // JSON body parsing using built-in middleware
-app.use(express.json());
+////app.use(express.json());
 
 // Serve up the applications static content
 app.use(express.static('public'));
@@ -41,11 +50,29 @@ apiRouter.post('/events', (req, res) => {
     }
 });
 
+app.post('/addUsername', async (req, res) => {
+    console.log('Received POST request to /addUsername');
+    const username = req.body;
+    console.log(username);
+    try {
+        // Call the addUsername function from your server code
+        const result = await DB.addUsername(username);
+        res.status(202).send({ success: true, result });
+
+    } catch (error) {
+        console.error('Error adding username:', error);
+        res.status(500).json({ success: false, error: 'Failed to add username' });
+    }
+});
+
+
 // Return the application's default page if the path is unknown
 app.use((_req, res) => {
   res.sendFile('index.html', {root: 'public'});
 });
 
 app.listen(port, () => {
-  console.log(`Listening on port ${port}`);
+    console.log('cookie'); //TEST
+    console.log(`Listening on port ${port}`);
 });
+

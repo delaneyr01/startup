@@ -16,8 +16,8 @@ const usernameCollection = db.collection('usernames');
 });
 
 async function addUsername(username) {
-  const result = await usernameCollection.insertOne(username);
-  return result;
+    const result = await usernameCollection.insertOne(username);
+    return result;
 }
 
 async function getAllUsernames() {
