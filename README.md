@@ -38,3 +38,6 @@ I created a web service that listens on a network port for HTTP requests for the
 
 ## Service Updates (11-28)
 I implemented client-side JavaScript functions for adding and displaying events on a calendar. Events are sent to the server using the addEventToServer function, and the loadEvents function retrieves and displays events from the server.
+
+## Database Updates (11-28)
+I created my MongoDB Atlas database, provided backend endpoints for manipulating application data, and store the data in the database. Whenever a username is entered into the login field on the main page, the username get's added to the database I created.
