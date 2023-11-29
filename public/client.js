@@ -15,7 +15,7 @@ function extractUsername() {
                 console.error('Error adding username:', error);
             });
 
-        // Optionally, you can clear the input field after submission
+        // clear the input field after submission
         nameInput.value = '';
     }
 }

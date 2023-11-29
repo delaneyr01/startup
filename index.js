@@ -65,6 +65,21 @@ app.post('/addUsername', async (req, res) => {
     }
 });
 
+app.post('/addEventToDatabase', async (req, res) => {
+    console.log('Received POST request to /addEventToDatabase');
+    const event= req.body;
+    console.log(event);
+    try {
+        // Call the addUsername function from your server code
+        const result = await DB.addEvent(event);
+        res.status(202).send({ success: true, result });
+
+    } catch (error) {
+        console.error('Error adding username:', error);
+        res.status(500).json({ success: false, error: 'Failed to add username' });
+    }
+});
+
 
 // Return the application's default page if the path is unknown
 app.use((_req, res) => {

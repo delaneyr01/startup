@@ -1,3 +1,4 @@
+/*
 // Function to load events from the server
 async function loadEvents() {
     try {
@@ -38,6 +39,7 @@ async function addEventToServer(eventName, eventDescription, eventDate) {
         console.error('Error adding event:', error);
     }
 }
+
 
 function addEvent() {
     //TODO: fetch post method to my server into an array
@@ -80,6 +82,101 @@ function addEvent() {
             eventPlaceholder.appendChild(eventDescriptionDiv);
         }
     });
+}
+*/
+
+function addEvent() {
+    // TODO: Fetch post method to your server into an array
+    var eventName = document.getElementById('eventName').value;
+    var eventDescription = document.getElementById('eventDescription').value;
+    var eventDate = document.getElementById('eventDate').value;
+
+    // Find all elements with data-date attribute matching the selected date
+    var dateElements = document.querySelectorAll('td[data-date="' + eventDate + '"]');
+
+    // Create an event block for the event name
+    var eventBlock = document.createElement('div');
+    eventBlock.textContent = eventName;
+    eventBlock.className = 'event-block';
+
+    // Create a description div for the event description
+    var eventDescriptionDiv = document.createElement('div');
+    eventDescriptionDiv.textContent = eventDescription;
+    eventDescriptionDiv.className = 'event-description';
+
+    // Loop through each date element and append the event block
+    dateElements.forEach(async function(dateElement) {
+        var eventPlaceholder = dateElement.querySelector('.event-placeholder');
+        if (eventPlaceholder) {
+            // Append the event block to the event placeholder
+            eventPlaceholder.appendChild(eventBlock);
+
+            // Add hover events to show/hide the description
+            eventBlock.addEventListener('mouseenter', function() {
+                eventBlock.style.display = 'none';
+                eventDescriptionDiv.classList.add('active');
+            });
+
+            eventDescriptionDiv.addEventListener('mouseleave', function() {
+                eventBlock.style.display = 'block';
+                eventDescriptionDiv.classList.remove('active');
+            });
+
+            // Append the event description div to the event placeholder
+            eventPlaceholder.appendChild(eventDescriptionDiv);
+
+            // Make an HTTP request to your server to add the event
+            try {
+                await addEventToDatabase(eventName, eventDescription, eventDate);
+                alert('Event added successfully');
+                console.log('Event added successfully');
+            } catch (error) {
+                //alert('Error adding event');
+                console.error('Error adding event:', error);
+            }
+        }
+    });
+}
+
+// Function to make a POST request to add the event
+async function addEventToDatabase(eventName, eventDescription, eventDate) {
+    console.log('in addEventToDatabase');
+    const response = await fetch('/addEventToDatabase', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            "eventName": eventName,
+            "eventDescription": eventDescription,
+            "eventDate": eventDate
+        }),
+    });
+
+    console.log(response.status); // Log the HTTP status code
+    console.log(response.statusText); // Log the status text
+
+    if (!response.ok) {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+            // Server returned an error in JSON format
+            try {
+                const errorResponse = await response.json();
+                throw new Error(`Failed to add event. Status: ${response.status}, Error: ${errorResponse.message}`);
+            } catch (jsonError) {
+                console.error('Error parsing JSON:', jsonError);
+            }
+        } else {
+            // Server returned an error, but not in JSON format
+            console.error('Error response is not in JSON format.');
+            throw new Error(`Failed to add event. Status: ${response.status}`);
+        }
+    } else {
+        // Log the actual response text
+        console.log(await response.text());
+    }
+
+    //return response.json();
 }
 
 function updateCalendar() {
