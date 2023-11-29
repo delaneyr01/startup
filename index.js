@@ -6,7 +6,7 @@ const DB = require('./database.js');
 
 
 // The service port. In production the application is statically hosted by the service on the same port.
-const port = 3000;
+const port = 4000;
 
 const dbName = 'skejaccounts';
 const colName = 'usernames';
