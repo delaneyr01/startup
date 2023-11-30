@@ -1,8 +1,18 @@
-function addEvent() {
+async function addEvent() {
     var eventName = document.getElementById('eventName').value;
     var eventDescription = document.getElementById('eventDescription').value;
     var eventDate = document.getElementById('eventDate').value;
     var eventTime = document.getElementById('eventTime').value;
+
+    // Make an HTTP request to your server to add the event
+    try {
+        await addEventToDatabase(eventName, eventDescription, eventDate);
+        alert('Event added successfully');
+        console.log('Event added successfully');
+    } catch (error) {
+        console.error('Error adding event:', error);
+        return;
+    }
 
     // Find all elements with data-date and data-time attributes matching the selected date and time
     var dateElements = document.querySelectorAll('td[data-date="' + eventDate + '"]');
@@ -46,6 +56,49 @@ function addEvent() {
         });
     });
 }
+
+// Function to make a POST request to add the event
+async function addEventToDatabase(eventName, eventDescription, eventDate) {
+    console.log('in addEventToDatabase');
+    const response = await fetch('/addEventToDatabase', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            "eventName": eventName,
+            "eventDescription": eventDescription,
+            "eventDate": eventDate
+        }),
+    });
+
+    console.log(response.status); // Log the HTTP status code
+    console.log(response.statusText); // Log the status text
+
+    if (!response.ok) {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+            // Server returned an error in JSON format
+            try {
+                const errorResponse = await response.json();
+                throw new Error(`Failed to add event. Status: ${response.status}, Error: ${errorResponse.message}`);
+            } catch (jsonError) {
+                console.error('Error parsing JSON:', jsonError);
+            }
+        } else {
+            // Server returned an error, but not in JSON format
+            console.error('Error response is not in JSON format.');
+            throw new Error(`Failed to add event. Status: ${response.status}`);
+        }
+    } else {
+        // Log the actual response text
+        console.log(await response.text());
+    }
+
+    //return response.json();
+}
+
+
 function formatDate(date){
     var month = (date.getMonth() + 1).toString().padStart(2, '0');
     var day = date.getDate().toString().padStart(2, '0');
@@ -61,8 +114,8 @@ function formatDataTag(currDate){
     // Create the formatted date string
     return year + '-' + month + '-' + day;
 }
-function assignDates(){
 
+function assignDates() {
     // Days of the week
     var daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
@@ -85,20 +138,27 @@ function assignDates(){
 
     var timesOfDay = ["09-AM", "10-AM", "11-AM", "12-PM", "01-PM", "02-PM", "03-PM", "04-PM", "05-PM", "06-PM", "07-PM", "08-PM", "09-PM", "10-PM"];
 
-    for (var i = 0; i < 14; i++) {
+    // Loop through each time
+    for (var i = 0; i < timesOfDay.length; i++) {
         // Dynamically construct the attribute selector for each time
         var attributeSelector = 'td[data-time="' + timesOfDay[i] + '"]';
-    
+
         // Select all <td> elements with the current time
         var tdElements = document.querySelectorAll(attributeSelector);
-    
-        // Loop through each selected <td> element
-        tdElements.forEach(function(td, index) {
-            tdElements[i].setAttribute('data-date', dataOfWeek[i]);
-            // Access the <div> inside each <td>
-            var eventDiv = td.querySelector('.event-placeholder');
 
-            //eventDiv.textContent = dataOfWeek[index]; 
-      });
+        // Loop through each selected <td> element
+        tdElements.forEach(function (td, index) {
+            // Use the correct index for dataOfWeek
+            td.setAttribute('data-date', dataOfWeek[index]);
+            td.setAttribute('date-time', timesOfDay[i]);
+
+            // Access the <div> inside each <td>
+            //var eventDiv = td.querySelector('.event-placeholder');
+
+            // Set the text content of the <div> to the data-date
+            //eventDiv.textContent = dataOfWeek[index] + " at " + timesOfDay[i];
+        });
     }
 }
+
+
