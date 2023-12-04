@@ -80,6 +80,18 @@ app.post('/addEventToDatabase', async (req, res) => {
     }
 });
 
+app.get('/getEventsForUser', async (req, res) => {
+    const username = req.query.username;
+
+    try {
+        // Use DB.getEventsForUser instead of calling the function directly
+        const events = await DB.getEventsForUser(username);
+        res.json(events);
+    } catch (error) {
+        console.error('Error in /getEventsForUser:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 
 // Return the application's default page if the path is unknown
 app.use((_req, res) => {

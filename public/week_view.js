@@ -4,9 +4,12 @@ async function addEvent() {
     var eventDate = document.getElementById('eventDate').value;
     var eventTime = document.getElementById('eventTime').value;
 
+    // Retrieve the current username from local storage
+    const currentUsername = localStorage.getItem('currentUsername');
+
     // Make an HTTP request to your server to add the event
     try {
-        await addEventToDatabase(eventName, eventDescription, eventDate);
+        await addEventToDatabase(eventName, eventDescription, eventDate, currentUsername);
         alert('Event added successfully');
         console.log('Event added successfully');
     } catch (error) {
@@ -58,7 +61,7 @@ async function addEvent() {
 }
 
 // Function to make a POST request to add the event
-async function addEventToDatabase(eventName, eventDescription, eventDate) {
+async function addEventToDatabase(eventName, eventDescription, eventDate, currentUsername) {
     console.log('in addEventToDatabase');
     const response = await fetch('/addEventToDatabase', {
         method: 'POST',
@@ -68,7 +71,8 @@ async function addEventToDatabase(eventName, eventDescription, eventDate) {
         body: JSON.stringify({
             "eventName": eventName,
             "eventDescription": eventDescription,
-            "eventDate": eventDate
+            "eventDate": eventDate,
+            "username": currentUsername  // Include the current username
         }),
     });
 

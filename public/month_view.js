@@ -85,6 +85,70 @@ function addEvent() {
 }
 */
 
+async function loadEvents() {
+    const currentUsername = sessionStorage.getItem('currentUsername');
+
+    try {
+        const response = await fetch(`/getEventsForUser?username=${currentUsername}`);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch events. Status: ${response.status}`);
+        }
+
+        // Remove the following line, as it consumes the response body
+        // const responseText = await response.text(); // Log the actual response text
+        // console.log('Response text:', responseText);
+
+        const events = await response.json();
+        updateCalendarWithEvents(events);
+    } catch (error) {
+        console.error('Error fetching events:', error);
+    }
+}
+
+
+// Function to update the calendar with events
+function updateCalendarWithEvents(events) {
+    // Loop through each event and update the calendar
+    events.forEach(event => {
+        const { eventName, eventDescription, eventDate } = event;
+
+        // Find the td element with data-date attribute matching the event date
+        const dateElement = document.querySelector(`td[data-date="${eventDate}"]`);
+
+        if (dateElement) {
+            // Create an event block for the event name
+            const eventBlock = document.createElement('div');
+            eventBlock.textContent = eventName;
+            eventBlock.className = 'event-block';
+
+            // Create a description div for the event description
+            const eventDescriptionDiv = document.createElement('div');
+            eventDescriptionDiv.textContent = eventDescription;
+            eventDescriptionDiv.className = 'event-description';
+
+            // Append the event block to the event placeholder
+            const eventPlaceholder = dateElement.querySelector('.event-placeholder');
+            if (eventPlaceholder) {
+                eventPlaceholder.appendChild(eventBlock);
+
+                // Add hover events to show/hide the description
+                eventBlock.addEventListener('mouseenter', function () {
+                    eventBlock.style.display = 'none';
+                    eventDescriptionDiv.classList.add('active');
+                });
+
+                eventDescriptionDiv.addEventListener('mouseleave', function () {
+                    eventBlock.style.display = 'block';
+                    eventDescriptionDiv.classList.remove('active');
+                });
+
+                // Append the event description div to the event placeholder
+                eventPlaceholder.appendChild(eventDescriptionDiv);
+            }
+        }
+    });
+}
+
 function addEvent() {
     // TODO: Fetch post method to your server into an array
     var eventName = document.getElementById('eventName').value;
@@ -140,6 +204,9 @@ function addEvent() {
 
 // Function to make a POST request to add the event
 async function addEventToDatabase(eventName, eventDescription, eventDate) {
+    // Retrieve the current username from local storage
+    const currentUsername = sessionStorage.getItem('currentUsername');
+
     console.log('in addEventToDatabase');
     const response = await fetch('/addEventToDatabase', {
         method: 'POST',
@@ -149,7 +216,8 @@ async function addEventToDatabase(eventName, eventDescription, eventDate) {
         body: JSON.stringify({
             "eventName": eventName,
             "eventDescription": eventDescription,
-            "eventDate": eventDate
+            "eventDate": eventDate,
+            "username": currentUsername  // Include the current username
         }),
     });
 
@@ -174,10 +242,46 @@ async function addEventToDatabase(eventName, eventDescription, eventDate) {
     } else {
         // Log the actual response text
         console.log(await response.text());
-    }
 
-    //return response.json();
+        // Store the event locally in the browser
+        storeEventLocally(eventName, eventDescription, eventDate);
+    }
 }
+
+function storeEventLocally(eventName, eventDescription, eventDate) {
+    const storedEvents = JSON.parse(sessionStorage.getItem('userEvents')) || [];
+    
+    storedEvents.push({
+        eventName: eventName,
+        eventDescription: eventDescription,
+        eventDate: eventDate
+    });
+
+    sessionStorage.setItem('userEvents', JSON.stringify(storedEvents));
+}
+
+
+function getStoredEvents() {
+    return JSON.parse(sessionStorage.getItem('userEvents')) || [];
+}
+
+
+async function loadEventsFromLocalStorage() {
+    const storedUsername = sessionStorage.getItem('currentUsername');
+
+    // Fetch events for the current user
+    if (storedUsername) {
+        const response = await fetch(`/getEventsForUser?username=${storedUsername}`);
+        if (response.ok) {
+            const events = await response.json();
+            updateCalendarWithEvents(events);
+        } else {
+            console.error('Error fetching events:', response.status);
+        }
+    }
+}
+
+
 
 function updateCalendar() {
     // Get the current date
@@ -228,30 +332,35 @@ function assignDates() {
      var dateCount = 1;
      var currDate = new Date();
      currDate.setDate(1);
-     for (var i = firstDayOfWeek; dateCount <= numberOfDays; i++) {
+     for (var i = firstDayOfWeek; dateCount <= numberOfDays && i < tdElements.length ; i++) {
         var spanElement = tdElements[i].querySelector('span');
-        spanElement.innerText = dateCount;
+        // Check if spanElement exists before trying to access its properties
+        if (spanElement) {
+            spanElement.innerText = dateCount;
 
+            // Get year, month, and day
+            var year = currDate.getFullYear();
+            var month = (currDate.getMonth() + 1).toString().padStart(2, '0');
+            var day = currDate.getDate().toString().padStart(2, '0');
 
-        // Get year, month, and day
-        var year = currDate.getFullYear();
-        var month = (currDate.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based, so add 1
-        var day = currDate.getDate().toString().padStart(2, '0');
-        
+            // Create the formatted date string
+            var formattedDate = year + '-' + month + '-' + day;
 
-        // Create the formatted date string
-        var formattedDate = year + '-' + month + '-' + day;
+            // Set the data-date attribute
+            tdElements[i].setAttribute('data-date', formattedDate);
 
-        //var formattedDate = getFormattedDate(currDate);
-        tdElements[i].setAttribute('data-date', formattedDate);
-        
-        currDate.setDate(dateCount + 1);
-        dateCount += 1;
+            // Increment the date count
+            dateCount += 1;
+            currDate.setDate(dateCount);
+        } else {
+            console.error('No span element found in tdElements[' + i + ']');
+        }
     }
 }
 
-function initializePage(){
+async function initializePage() {
     updateCalendar();
     assignDates();
-    loadEvents();
+    await loadEventsFromLocalStorage(); // Wait for loadEventsFromLocalStorage to complete
+    await loadEvents(); // Wait for loadEvents to complete before proceeding
 }
