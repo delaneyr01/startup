@@ -41,3 +41,6 @@ I implemented client-side JavaScript functions for adding and displaying events 
 
 ## Database Updates (11-28)
 I created my MongoDB Atlas database, provided backend endpoints for manipulating application data, and store the data in the database. Whenever a username is entered into the login field on the main page, the username get's added to the database I created.
+
+## Login Updates (12-04)
+Events added in Month View under your username will now persistently display even if you navigate to another tab, exit the website, and log in again.
