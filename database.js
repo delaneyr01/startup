@@ -21,13 +21,15 @@ async function addUsername(username) {
     return result;
 }
 
-async function addEvent(username, eventName, eventDescription, eventDate) {
+async function addEvent(event) {
     const result = await eventCollection.insertOne({
-        username: username,
-        eventName: eventName,
-        eventDescription: eventDescription,
-        eventDate: eventDate
+        username: event.username,
+        eventName: event.eventName,
+        eventDescription: event.eventDescription,
+        eventDate: event.eventDate
     });
+
+    console.log("result of addEvent in database.js: ", result);
 
     return result;
 }

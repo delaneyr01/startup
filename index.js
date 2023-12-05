@@ -72,6 +72,7 @@ app.post('/addEventToDatabase', async (req, res) => {
     try {
         // Call the addUsername function from your server code
         const result = await DB.addEvent(event);
+        console.log('Event added:', result);
         res.status(202).send({ success: true, result });
 
     } catch (error) {
