@@ -27,6 +27,7 @@ app.use(`/api`, apiRouter);
 // Sample array to store events (in-memory storage, replace with a database in production)
 let events = [];
 
+/*
 apiRouter.get('/events', async (req, res) => {
     const events = await DB.getAllUsernames();
     res.send(events);
@@ -48,7 +49,42 @@ apiRouter.post('/events', (req, res) => {
     } else {
         res.status(400).json({ message: 'Invalid request. Please provide name, description, and date.' });
     }
+});*/
+
+apiRouter.get('/events', async (req, res) => {
+    try {
+        const events = await DB.getAllUsernames();
+        res.send(events);
+    } catch (error) {
+        console.error('Error fetching events:', error);
+        res.status(500).json({ success: false, error: 'Failed to fetch events' });
+    }
 });
+
+apiRouter.post('/events', async (req, res) => {
+    const { name, description, date } = req.body;
+
+    if (name && description && date) {
+        try {
+            const newEvent = {
+                name: name,
+                description: description,
+                date: date
+            };
+
+            // Call the addEvent function from your server code
+            const result = await DB.addEvent(newEvent);
+
+            res.status(201).json({ message: 'Event added successfully', event: result.ops[0] });
+        } catch (error) {
+            console.error('Error adding event:', error);
+            res.status(500).json({ message: 'Failed to add event' });
+        }
+    } else {
+        res.status(400).json({ message: 'Invalid request. Please provide name, description, and date.' });
+    }
+});
+
 
 app.post('/addUsername', async (req, res) => {
     console.log('Received POST request to /addUsername');

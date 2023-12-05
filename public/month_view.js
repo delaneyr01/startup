@@ -105,7 +105,7 @@ async function loadEvents() {
     }
 }
 
-
+/*
 // Function to update the calendar with events
 function updateCalendarWithEvents(events) {
     // Loop through each event and update the calendar
@@ -144,6 +144,56 @@ function updateCalendarWithEvents(events) {
 
                 // Append the event description div to the event placeholder
                 eventPlaceholder.appendChild(eventDescriptionDiv);
+            }
+        }
+    });
+}
+*/
+
+// Function to update the calendar with events
+function updateCalendarWithEvents(events) {
+    // Loop through each event and update the calendar
+    events.forEach(event => {
+        const { eventName, eventDescription, eventDate } = event;
+
+        // Find the td element with data-date attribute matching the event date
+        const dateElement = document.querySelector(`td[data-date="${eventDate}"]`);
+
+        if (dateElement) {
+            // Check if there's already an event block for this date
+            const existingEventBlock = dateElement.querySelector(`.event-block[data-event="${eventName}"]`);
+
+            if (!existingEventBlock) {
+                // Create an event block for the event name
+                const eventBlock = document.createElement('div');
+                eventBlock.textContent = eventName;
+                eventBlock.className = 'event-block';
+                eventBlock.setAttribute('data-event', eventName); // Set a data attribute to identify the event
+
+                // Create a description div for the event description
+                const eventDescriptionDiv = document.createElement('div');
+                eventDescriptionDiv.textContent = eventDescription;
+                eventDescriptionDiv.className = 'event-description';
+
+                // Append the event block to the event placeholder
+                const eventPlaceholder = dateElement.querySelector('.event-placeholder');
+                if (eventPlaceholder) {
+                    eventPlaceholder.appendChild(eventBlock);
+
+                    // Add hover events to show/hide the description
+                    eventBlock.addEventListener('mouseenter', function () {
+                        eventBlock.style.display = 'none';
+                        eventDescriptionDiv.classList.add('active');
+                    });
+
+                    eventDescriptionDiv.addEventListener('mouseleave', function () {
+                        eventBlock.style.display = 'block';
+                        eventDescriptionDiv.classList.remove('active');
+                    });
+
+                    // Append the event description div to the event placeholder
+                    eventPlaceholder.appendChild(eventDescriptionDiv);
+                }
             }
         }
     });
