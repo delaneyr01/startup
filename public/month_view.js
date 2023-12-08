@@ -1,90 +1,3 @@
-/*
-// Function to load events from the server
-async function loadEvents() {
-    try {
-        const response = await fetch('/api/events');
-        const events = await response.json();
-
-        displayEvents(events);
-    } catch (error) {
-        console.error('Error loading events:', error);
-    }
-}
-
-// Function to add an event to the server
-async function addEventToServer(eventName, eventDescription, eventDate) {
-    try {
-        const response = await fetch('/api/events', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                name: eventName,
-                description: eventDescription,
-                date: eventDate,
-            }),
-        });
-
-        // Check if the request was successful (status code 2xx)
-        if (response.ok) {
-            // Reload events from the server after adding a new event
-            loadEvents();
-        } else {
-            // Handle error scenario if needed
-            console.error('Failed to add event:', response.status, response.statusText);
-        }
-    } catch (error) {
-        // Handle network errors or other issues
-        console.error('Error adding event:', error);
-    }
-}
-
-
-function addEvent() {
-    //TODO: fetch post method to my server into an array
-    var eventName = document.getElementById('eventName').value;
-    var eventDescription = document.getElementById('eventDescription').value;
-    var eventDate = document.getElementById('eventDate').value;
-
-    // Find all elements with data-date attribute matching the selected date
-    var dateElements = document.querySelectorAll('td[data-date="' + eventDate + '"]');
-
-    // Create an event block for the event name
-    var eventBlock = document.createElement('div');
-    eventBlock.textContent = eventName;
-    eventBlock.className = 'event-block';
-
-    // Create a description div for the event description
-    var eventDescriptionDiv = document.createElement('div');
-    eventDescriptionDiv.textContent = eventDescription;
-    eventDescriptionDiv.className = 'event-description';
-
-    // Loop through each date element and append the event block
-    dateElements.forEach(function(dateElement) {
-        var eventPlaceholder = dateElement.querySelector('.event-placeholder');
-        if (eventPlaceholder) {
-            // Append the event block to the event placeholder
-            eventPlaceholder.appendChild(eventBlock);
-
-            // Add hover events to show/hide the description
-            eventBlock.addEventListener('mouseenter', function() {
-                eventBlock.style.display = 'none';
-                eventDescriptionDiv.classList.add('active');
-            });
-
-            eventDescriptionDiv.addEventListener('mouseleave', function() {
-                eventBlock.style.display = 'block';
-                eventDescriptionDiv.classList.remove('active');
-            });
-            
-            // Append the event description div to the event placeholder
-            eventPlaceholder.appendChild(eventDescriptionDiv);
-        }
-    });
-}
-*/
-
 async function loadEvents() {
     const currentUsername = sessionStorage.getItem('currentUsername');
 
@@ -105,56 +18,11 @@ async function loadEvents() {
     }
 }
 
-/*
 // Function to update the calendar with events
 function updateCalendarWithEvents(events) {
     // Loop through each event and update the calendar
     events.forEach(event => {
         const { eventName, eventDescription, eventDate } = event;
-
-        // Find the td element with data-date attribute matching the event date
-        const dateElement = document.querySelector(`td[data-date="${eventDate}"]`);
-
-        if (dateElement) {
-            // Create an event block for the event name
-            const eventBlock = document.createElement('div');
-            eventBlock.textContent = eventName;
-            eventBlock.className = 'event-block';
-
-            // Create a description div for the event description
-            const eventDescriptionDiv = document.createElement('div');
-            eventDescriptionDiv.textContent = eventDescription;
-            eventDescriptionDiv.className = 'event-description';
-
-            // Append the event block to the event placeholder
-            const eventPlaceholder = dateElement.querySelector('.event-placeholder');
-            if (eventPlaceholder) {
-                eventPlaceholder.appendChild(eventBlock);
-
-                // Add hover events to show/hide the description
-                eventBlock.addEventListener('mouseenter', function () {
-                    eventBlock.style.display = 'none';
-                    eventDescriptionDiv.classList.add('active');
-                });
-
-                eventDescriptionDiv.addEventListener('mouseleave', function () {
-                    eventBlock.style.display = 'block';
-                    eventDescriptionDiv.classList.remove('active');
-                });
-
-                // Append the event description div to the event placeholder
-                eventPlaceholder.appendChild(eventDescriptionDiv);
-            }
-        }
-    });
-}
-*/
-
-// Function to update the calendar with events
-function updateCalendarWithEvents(events) {
-    // Loop through each event and update the calendar
-    events.forEach(event => {
-        const { eventName, eventDescription, eventDate, eventTime } = event;
 
         // Find the td element with data-date attribute matching the event date
         const dateElement = document.querySelector(`td[data-date="${eventDate}"]`);
@@ -199,28 +67,14 @@ function updateCalendarWithEvents(events) {
     });
 }
 
-async function addEvent() {
+function addEvent() {
+    // TODO: Fetch post method to your server into an array
     var eventName = document.getElementById('eventName').value;
     var eventDescription = document.getElementById('eventDescription').value;
     var eventDate = document.getElementById('eventDate').value;
-    var eventTime = document.getElementById('eventTime').value;
 
-    // Retrieve the current username from local storage
-    const currentUsername = localStorage.getItem('currentUsername');
-
-    // Make an HTTP request to your server to add the event
-    try {
-        await addEventToDatabase(eventName, eventDescription, eventDate, eventTime, currentUsername);
-        alert('Event added successfully');
-        console.log('Event added successfully');
-    } catch (error) {
-        console.error('Error adding event:', error);
-        return;
-    }
-
-    // Find all elements with data-date and data-time attributes matching the selected date and time
+    // Find all elements with data-date attribute matching the selected date
     var dateElements = document.querySelectorAll('td[data-date="' + eventDate + '"]');
-    var timeElements = document.querySelectorAll('td[data-time="' + eventTime + '"]');
 
     // Create an event block for the event name
     var eventBlock = document.createElement('div');
@@ -232,37 +86,162 @@ async function addEvent() {
     eventDescriptionDiv.textContent = eventDescription;
     eventDescriptionDiv.className = 'event-description';
 
-    // Loop through each date element
-    dateElements.forEach(function(dateElement) {
-        // Loop through each time element and check if it's within the date element
-        timeElements.forEach(function(timeElement) {
-            if (dateElement.contains(timeElement)) {
-                var eventPlaceholder = dateElement.querySelector('.event-placeholder');
-                if (eventPlaceholder) {
-                    // Append the event block to the event placeholder
-                    eventPlaceholder.appendChild(eventBlock);
+    // Loop through each date element and append the event block
+    dateElements.forEach(async function(dateElement) {
+        var eventPlaceholder = dateElement.querySelector('.event-placeholder');
+        if (eventPlaceholder) {
+            // Append the event block to the event placeholder
+            eventPlaceholder.appendChild(eventBlock);
 
-                    // Add hover events to show/hide the description
-                    eventBlock.addEventListener('mouseenter', function() {
-                        eventBlock.style.display = 'none';
-                        eventDescriptionDiv.classList.add('active');
-                    });
+            // Add hover events to show/hide the description
+            eventBlock.addEventListener('mouseenter', function() {
+                eventBlock.style.display = 'none';
+                eventDescriptionDiv.classList.add('active');
+            });
 
-                    eventDescriptionDiv.addEventListener('mouseleave', function() {
-                        eventBlock.style.display = 'block';
-                        eventDescriptionDiv.classList.remove('active');
-                    });
+            eventDescriptionDiv.addEventListener('mouseleave', function() {
+                eventBlock.style.display = 'block';
+                eventDescriptionDiv.classList.remove('active');
+            });
 
-                    // Append the event description div to the event placeholder
-                    eventPlaceholder.appendChild(eventDescriptionDiv);
-                }
+            // Append the event description div to the event placeholder
+            eventPlaceholder.appendChild(eventDescriptionDiv);
+
+            // Make an HTTP request to your server to add the event
+            try {
+                await addEventToDatabase(eventName, eventDescription, eventDate);
+                alert('Event added successfully');
+                console.log('Event added successfully');
+            } catch (error) {
+                //alert('Error adding event');
+                console.error('Error adding event:', error);
             }
-        });
+        }
     });
+    // Retrieve the current username from local storage
+    const currentUsername = sessionStorage.getItem('currentUsername');
+    // Notify other clients through WebSocket
+    notifyEventAdded(eventName, eventDescription, eventDate, eventTime, currentUsername);
 }
 
+// Function to notify other clients about the new event through WebSocket
+function notifyEventAdded(eventName, eventDescription, eventDate, eventTime, currentUsername) {
+    // Create a WebSocket connection
+    const socket = new WebSocket('ws://localhost:3000'); // Use the appropriate port for your WebSocket proxy
+  
+    socket.onopen = () => {
+      console.log('WebSocket connection established');
+  
+      // Construct a message object
+      const message = {
+        type: 'event_added',
+        data: {
+          eventName,
+          eventDescription,
+          eventDate,
+          eventTime,
+          currentUsername,
+        },
+      };
+  
+      // Send the message as JSON
+      socket.send(JSON.stringify(message));
+    };
+  
+    // Handle incoming messages correctly
+    socket.onmessage = (event) => {
+      console.log("event is ", event.data);
+      const data = event.data;
+  
+      // Check if the message is a JSON string
+      try {
+        const jsonData = JSON.parse(data);
+        console.log('Received JSON:', jsonData);
+  
+        // Extract the eventName
+        const receivedEventName = jsonData.data.eventName;
+        const receivedUserName = jsonData.data.currentUsername;
+  
+        // Use the eventName as needed
+        console.log('Received Event Name:', receivedEventName);
+        console.log('Received user name:', receivedUserName);
+  
+        // Append the message to the message container
+        appendMessage(receivedEventName, receivedUsername);
+  
+      } catch (error) {
+        console.log('Received non-JSON message:', data);
+
+        // Extract eventName value using regular expression
+        const eventMatch = data.match(/"eventName"\s*:\s*"([^"]+)"/);
+        const eventName = eventMatch ? eventMatch[1] : null;
+
+        // Extract currentUsername using regular expression
+        const userMatch = data.match(/"currentUsername"\s*:\s*"([^"]+)"/);
+        const currentUsername = userMatch ? userMatch[1] : null;
+
+        console.log('Extracted Event Name:', eventName);
+        console.log('Extracted Username:', currentUsername)
+
+        if (eventName != null && currentUsername != null) {
+            appendMessage(eventName, currentUsername);
+        }
+        // Handle non-JSON messages here
+      }
+    };
+  
+    // Handle WebSocket connection closure
+    socket.onclose = () => {
+      console.log('WebSocket connection closed');
+    };
+  
+    // Handle WebSocket errors
+    socket.onerror = (error) => {
+      console.error('WebSocket error:', error);
+    };
+  }
+  
+  
+// Function to append a message to the message container
+function appendMessage(messageData, currentUsername) {
+    // Retrieve the current username from local storage
+    //const currentUsername = sessionStorage.getItem('currentUsername');
+
+    // Get the message container element
+    const messageContainer = document.getElementById('messageContainer');
+
+    console.log("got the message container");
+
+    // Create a new div for the message
+    const messageDiv = document.createElement('div');
+    messageDiv.textContent = `${currentUsername} added an event: ${messageData}`;
+
+    // Append the message div to the container
+    messageContainer.appendChild(messageDiv);
+
+    console.log("appended the message");
+
+    // Show the message container
+    messageContainer.style.display = 'block';
+
+    // Hide the message after a certain period (e.g., 5 seconds)
+    setTimeout(() => {
+        // Remove the message div from the container
+        messageContainer.removeChild(messageDiv);
+        
+        // If there are no more messages, hide the container
+        if (messageContainer.childElementCount === 0) {
+            messageContainer.style.display = 'none';
+        }
+    }, 10000);
+}
+
+
+  
+  
+
 // Function to make a POST request to add the event
-async function addEventToDatabase(eventName, eventDescription, eventDate, eventTime) {
+async function addEventToDatabase(eventName, eventDescription, eventDate) {
     // Retrieve the current username from local storage
     const currentUsername = sessionStorage.getItem('currentUsername');
 
@@ -276,9 +255,7 @@ async function addEventToDatabase(eventName, eventDescription, eventDate, eventT
             "eventName": eventName,
             "eventDescription": eventDescription,
             "eventDate": eventDate,
-            "eventTime": eventTime,
-            "username": currentUsername 
-             // Include the current username
+            "username": currentUsername  // Include the current username
         }),
     });
 
@@ -305,28 +282,25 @@ async function addEventToDatabase(eventName, eventDescription, eventDate, eventT
         console.log(await response.text());
 
         // Store the event locally in the browser
-        storeEventLocally(eventName, eventDescription, eventDate, eventTime);
+        storeEventLocally(eventName, eventDescription, eventDate);
     }
 }
 
-function storeEventLocally(eventName, eventDescription, eventDate, eventTime) {
+function storeEventLocally(eventName, eventDescription, eventDate) {
     const storedEvents = JSON.parse(sessionStorage.getItem('userEvents')) || [];
     
     storedEvents.push({
         eventName: eventName,
         eventDescription: eventDescription,
-        eventDate: eventDate,
-        eventTime: eventTime
+        eventDate: eventDate
     });
 
     sessionStorage.setItem('userEvents', JSON.stringify(storedEvents));
 }
 
-
 function getStoredEvents() {
     return JSON.parse(sessionStorage.getItem('userEvents')) || [];
 }
-
 
 async function loadEventsFromLocalStorage() {
     const storedUsername = sessionStorage.getItem('currentUsername');
@@ -342,8 +316,6 @@ async function loadEventsFromLocalStorage() {
         }
     }
 }
-
-
 
 function updateCalendar() {
     // Get the current date

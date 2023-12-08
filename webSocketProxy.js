@@ -10,8 +10,8 @@ function createWebSocketProxy() {
     res.end('WebSocket Proxy');
   });
 
-  // Create a WebSocket server
-  const webSocketServer = createWebSocketServer();
+  // Create a WebSocket server and pass the HTTP server instance
+  const webSocketServer = createWebSocketServer(httpServer);
 
   // Handle the protocol upgrade from HTTP to WebSocket
   httpServer.on('upgrade', (request, socket, head) => {

@@ -2,10 +2,10 @@
 
 const WebSocket = require('ws');
 
-function createWebSocketServer() {
-  const server = new WebSocket.Server({ noServer: true });
+function createWebSocketServer(server) {
+  const wss = new WebSocket.Server({ noServer: true });
 
-  server.on('connection', (socket) => {
+  wss.on('connection', (socket) => {
     console.log('Client connected');
 
     // Send a welcome message to the client as a string
@@ -17,8 +17,12 @@ function createWebSocketServer() {
       const textMessage = message.toString('utf-8');
       console.log('Received:', textMessage);
 
-      // Send a response back to the client as a string
-      socket.send(`You sent: ${textMessage}`);
+      // Broadcast the message to all clients (except the sender)
+      wss.clients.forEach((client) => {
+        if (client !== socket && client.readyState === WebSocket.OPEN) {
+          client.send(textMessage);
+        }
+      });
     });
 
     // Handle the WebSocket connection closing
@@ -27,7 +31,8 @@ function createWebSocketServer() {
     });
   });
 
-  return server;
+  return wss;
 }
 
 module.exports = { createWebSocketServer };
+
