@@ -1,6 +1,7 @@
 const express = require('express');
 const { MongoClient } = require('mongodb');
 const bodyParser = require('body-parser');
+const { createWebSocketProxy } = require('./webSocketProxy'); // Assuming webSocketProxy.js is in the same directory
 const app = express();
 const DB = require('./database.js');
 
@@ -8,14 +9,14 @@ const DB = require('./database.js');
 // The service port. In production the application is statically hosted by the service on the same port.
 const port = 4000;
 
+// Create the WebSocket proxy and obtain references to HTTP server and WebSocket server
+const { httpServer, webSocketServer } = createWebSocketProxy();
+
 const dbName = 'skejaccounts';
 const colName = 'usernames';
 const url = 'mongodb+srv://dr455:cs260password@checkmyskejcluster.q8gyzl2.mongodb.net/skejaccounts';
 
 app.use(bodyParser.json());
-
-// JSON body parsing using built-in middleware
-////app.use(express.json());
 
 // Serve up the applications static content
 app.use(express.static('public'));
@@ -23,33 +24,6 @@ app.use(express.static('public'));
 // Router for service endpoints
 var apiRouter = express.Router();
 app.use(`/api`, apiRouter);
-
-// Sample array to store events (in-memory storage, replace with a database in production)
-let events = [];
-
-/*
-apiRouter.get('/events', async (req, res) => {
-    const events = await DB.getAllUsernames();
-    res.send(events);
-});
-
-apiRouter.post('/events', (req, res) => {
-    const { name, description, date } = req.body;
-
-    if (name && description && date) {
-        const newEvent = {
-            name: name,
-            description: description,
-            date: date
-        };
-
-        events.push(newEvent);
-
-        res.status(201).json({ message: 'Event added successfully', event: newEvent });
-    } else {
-        res.status(400).json({ message: 'Invalid request. Please provide name, description, and date.' });
-    }
-});*/
 
 apiRouter.get('/events', async (req, res) => {
     try {
@@ -135,8 +109,29 @@ app.use((_req, res) => {
   res.sendFile('index.html', {root: 'public'});
 });
 
+// Your WebSocket server logic can go here inside the 'connection' event handler
+webSocketServer.on('connection', (ws) => {
+    console.log('WebSocket connection established through proxy');
+  
+    // Send a welcome message to the connected client
+    ws.send('Welcome to the WebSocket server through the proxy!');
+  
+    // Handle messages from the client
+    ws.on('message', (message) => {
+      const textMessage = message.toString('utf-8');
+      console.log('Server Received:', textMessage);
+  
+      // Echo the received message back to the client
+      ws.send(`You sent: ${textMessage}`);
+    });
+  
+    // Handle the WebSocket connection closing
+    ws.on('close', () => {
+      console.log('Client disconnected');
+    });
+  });
+
 app.listen(port, () => {
     console.log('cookie'); //TEST
     console.log(`Listening on port ${port}`);
 });
-

@@ -154,7 +154,7 @@ function updateCalendarWithEvents(events) {
 function updateCalendarWithEvents(events) {
     // Loop through each event and update the calendar
     events.forEach(event => {
-        const { eventName, eventDescription, eventDate } = event;
+        const { eventName, eventDescription, eventDate, eventTime } = event;
 
         // Find the td element with data-date attribute matching the event date
         const dateElement = document.querySelector(`td[data-date="${eventDate}"]`);
@@ -199,14 +199,28 @@ function updateCalendarWithEvents(events) {
     });
 }
 
-function addEvent() {
-    // TODO: Fetch post method to your server into an array
+async function addEvent() {
     var eventName = document.getElementById('eventName').value;
     var eventDescription = document.getElementById('eventDescription').value;
     var eventDate = document.getElementById('eventDate').value;
+    var eventTime = document.getElementById('eventTime').value;
 
-    // Find all elements with data-date attribute matching the selected date
+    // Retrieve the current username from local storage
+    const currentUsername = localStorage.getItem('currentUsername');
+
+    // Make an HTTP request to your server to add the event
+    try {
+        await addEventToDatabase(eventName, eventDescription, eventDate, eventTime, currentUsername);
+        alert('Event added successfully');
+        console.log('Event added successfully');
+    } catch (error) {
+        console.error('Error adding event:', error);
+        return;
+    }
+
+    // Find all elements with data-date and data-time attributes matching the selected date and time
     var dateElements = document.querySelectorAll('td[data-date="' + eventDate + '"]');
+    var timeElements = document.querySelectorAll('td[data-time="' + eventTime + '"]');
 
     // Create an event block for the event name
     var eventBlock = document.createElement('div');
@@ -218,42 +232,37 @@ function addEvent() {
     eventDescriptionDiv.textContent = eventDescription;
     eventDescriptionDiv.className = 'event-description';
 
-    // Loop through each date element and append the event block
-    dateElements.forEach(async function(dateElement) {
-        var eventPlaceholder = dateElement.querySelector('.event-placeholder');
-        if (eventPlaceholder) {
-            // Append the event block to the event placeholder
-            eventPlaceholder.appendChild(eventBlock);
+    // Loop through each date element
+    dateElements.forEach(function(dateElement) {
+        // Loop through each time element and check if it's within the date element
+        timeElements.forEach(function(timeElement) {
+            if (dateElement.contains(timeElement)) {
+                var eventPlaceholder = dateElement.querySelector('.event-placeholder');
+                if (eventPlaceholder) {
+                    // Append the event block to the event placeholder
+                    eventPlaceholder.appendChild(eventBlock);
 
-            // Add hover events to show/hide the description
-            eventBlock.addEventListener('mouseenter', function() {
-                eventBlock.style.display = 'none';
-                eventDescriptionDiv.classList.add('active');
-            });
+                    // Add hover events to show/hide the description
+                    eventBlock.addEventListener('mouseenter', function() {
+                        eventBlock.style.display = 'none';
+                        eventDescriptionDiv.classList.add('active');
+                    });
 
-            eventDescriptionDiv.addEventListener('mouseleave', function() {
-                eventBlock.style.display = 'block';
-                eventDescriptionDiv.classList.remove('active');
-            });
+                    eventDescriptionDiv.addEventListener('mouseleave', function() {
+                        eventBlock.style.display = 'block';
+                        eventDescriptionDiv.classList.remove('active');
+                    });
 
-            // Append the event description div to the event placeholder
-            eventPlaceholder.appendChild(eventDescriptionDiv);
-
-            // Make an HTTP request to your server to add the event
-            try {
-                await addEventToDatabase(eventName, eventDescription, eventDate);
-                alert('Event added successfully');
-                console.log('Event added successfully');
-            } catch (error) {
-                //alert('Error adding event');
-                console.error('Error adding event:', error);
+                    // Append the event description div to the event placeholder
+                    eventPlaceholder.appendChild(eventDescriptionDiv);
+                }
             }
-        }
+        });
     });
 }
 
 // Function to make a POST request to add the event
-async function addEventToDatabase(eventName, eventDescription, eventDate) {
+async function addEventToDatabase(eventName, eventDescription, eventDate, eventTime) {
     // Retrieve the current username from local storage
     const currentUsername = sessionStorage.getItem('currentUsername');
 
@@ -267,7 +276,9 @@ async function addEventToDatabase(eventName, eventDescription, eventDate) {
             "eventName": eventName,
             "eventDescription": eventDescription,
             "eventDate": eventDate,
-            "username": currentUsername  // Include the current username
+            "eventTime": eventTime,
+            "username": currentUsername 
+             // Include the current username
         }),
     });
 
@@ -294,17 +305,18 @@ async function addEventToDatabase(eventName, eventDescription, eventDate) {
         console.log(await response.text());
 
         // Store the event locally in the browser
-        storeEventLocally(eventName, eventDescription, eventDate);
+        storeEventLocally(eventName, eventDescription, eventDate, eventTime);
     }
 }
 
-function storeEventLocally(eventName, eventDescription, eventDate) {
+function storeEventLocally(eventName, eventDescription, eventDate, eventTime) {
     const storedEvents = JSON.parse(sessionStorage.getItem('userEvents')) || [];
     
     storedEvents.push({
         eventName: eventName,
         eventDescription: eventDescription,
-        eventDate: eventDate
+        eventDate: eventDate,
+        eventTime: eventTime
     });
 
     sessionStorage.setItem('userEvents', JSON.stringify(storedEvents));

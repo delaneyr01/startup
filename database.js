@@ -26,7 +26,8 @@ async function addEvent(event) {
         username: event.username,
         eventName: event.eventName,
         eventDescription: event.eventDescription,
-        eventDate: event.eventDate
+        eventDate: event.eventDate,
+        eventTime: event.eventTime
     });
 
     console.log("result of addEvent in database.js: ", result);
