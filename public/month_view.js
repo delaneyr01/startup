@@ -126,9 +126,10 @@ function addEvent() {
 
 // Function to notify other clients about the new event through WebSocket
 function notifyEventAdded(eventName, eventDescription, eventDate, eventTime, currentUsername) {
+    const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
     // Create a WebSocket connection
-    const socket = new WebSocket('ws://localhost:4000'); // Use the appropriate port for your WebSocket proxy
-  
+    //const socket = new WebSocket('ws://localhost:4000'); // Use the appropriate port for your WebSocket proxy
+    const socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
     socket.onopen = () => {
       console.log('WebSocket connection established');
   

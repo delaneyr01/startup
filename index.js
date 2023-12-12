@@ -1,9 +1,13 @@
 const express = require('express');
 const { MongoClient } = require('mongodb');
 const bodyParser = require('body-parser');
-const { createWebSocketProxy } = require('./webSocketProxy'); // Assuming webSocketProxy.js is in the same directory
+const { createWebSocketProxy } = require('./webSocketProxy'); 
+const startWebSocketClient = require('./webSocketClient');
 const app = express();
 const DB = require('./database.js');
+
+// Serve static files from the 'public' directory
+app.use(express.static('public'));
 
 
 // The service port. In production the application is statically hosted by the service on the same port.
@@ -109,29 +113,32 @@ app.use((_req, res) => {
 const httpServer = app.listen(port, () => {
     console.log('cookie'); //TEST
     console.log(`Listening on port ${port}`);
+
+    // Launch WebSocket client when the server starts
+    const { socket } = startWebSocketClient();
+
+    // Create the WebSocket proxy and obtain references to HTTP server and WebSocket server
+    const { webSocketServer } = createWebSocketProxy(httpServer, socket);
+
+    // Your WebSocket server logic can go here inside the 'connection' event handler
+    webSocketServer.on('connection', (ws) => {
+        console.log('WebSocket connection established through proxy');
+
+        // Send a welcome message to the connected client
+        ws.send('Welcome to the WebSocket server through the proxy!');
+
+        // Handle messages from the client
+        ws.on('message', (message) => {
+            const textMessage = message.toString('utf-8');
+            console.log('Server Received:', textMessage);
+
+            // Echo the received message back to the client
+            ws.send(`You sent: ${textMessage}`);
+        });
+
+        // Handle the WebSocket connection closing
+        ws.on('close', () => {
+            console.log('Client disconnected');
+        });
+    });
 });
-
-// Create the WebSocket proxy and obtain references to HTTP server and WebSocket server
-const { webSocketServer } = createWebSocketProxy(httpServer);
-
-// Your WebSocket server logic can go here inside the 'connection' event handler
-webSocketServer.on('connection', (ws) => {
-    console.log('WebSocket connection established through proxy');
-  
-    // Send a welcome message to the connected client
-    ws.send('Welcome to the WebSocket server through the proxy!');
-  
-    // Handle messages from the client
-    ws.on('message', (message) => {
-      const textMessage = message.toString('utf-8');
-      console.log('Server Received:', textMessage);
-  
-      // Echo the received message back to the client
-      ws.send(`You sent: ${textMessage}`);
-    });
-  
-    // Handle the WebSocket connection closing
-    ws.on('close', () => {
-      console.log('Client disconnected');
-    });
-  });
