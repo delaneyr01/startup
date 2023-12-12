@@ -3,7 +3,12 @@ console.log('Before WebSocket connection code');
 
 const WebSocket = require('ws');
 
-const socket = new WebSocket('ws://localhost:3000'); // Use the appropriate port for your WebSocket proxy
+const protocol = 'ws';
+const host = 'localhost';
+const port = 4000; // Replace with the actual port of your WebSocket server
+
+const socket = new WebSocket(`${protocol}://${host}:${port}/ws`);
+
 
 socket.on('open', () => {
   console.log('WebSocket connection established');

@@ -9,9 +9,6 @@ const DB = require('./database.js');
 // The service port. In production the application is statically hosted by the service on the same port.
 const port = 4000;
 
-// Create the WebSocket proxy and obtain references to HTTP server and WebSocket server
-const { httpServer, webSocketServer } = createWebSocketProxy();
-
 const dbName = 'skejaccounts';
 const colName = 'usernames';
 const url = 'mongodb+srv://dr455:cs260password@checkmyskejcluster.q8gyzl2.mongodb.net/skejaccounts';
@@ -109,6 +106,14 @@ app.use((_req, res) => {
   res.sendFile('index.html', {root: 'public'});
 });
 
+const httpServer = app.listen(port, () => {
+    console.log('cookie'); //TEST
+    console.log(`Listening on port ${port}`);
+});
+
+// Create the WebSocket proxy and obtain references to HTTP server and WebSocket server
+const { webSocketServer } = createWebSocketProxy(httpServer);
+
 // Your WebSocket server logic can go here inside the 'connection' event handler
 webSocketServer.on('connection', (ws) => {
     console.log('WebSocket connection established through proxy');
@@ -130,8 +135,3 @@ webSocketServer.on('connection', (ws) => {
       console.log('Client disconnected');
     });
   });
-
-app.listen(port, () => {
-    console.log('cookie'); //TEST
-    console.log(`Listening on port ${port}`);
-});

@@ -1,14 +1,12 @@
-// webSocketProxy.js
-
 const http = require('http');
-const { createWebSocketServer } = require('./webSocketServer'); // Assuming webSocketServer.js is in the same directory
+const { createWebSocketServer } = require('./webSocketServer');
 
-function createWebSocketProxy() {
+function createWebSocketProxy(httpServer) {
   // Create an HTTP server
-  const httpServer = http.createServer((req, res) => {
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.end('WebSocket Proxy');
-  });
+//   const httpServer = http.createServer((req, res) => {
+//     res.writeHead(200, { 'Content-Type': 'text/plain' });
+//     res.end('WebSocket Proxy');
+//   });
 
   // Create a WebSocket server and pass the HTTP server instance
   const webSocketServer = createWebSocketServer(httpServer);
@@ -20,13 +18,13 @@ function createWebSocketProxy() {
     });
   });
 
-  // Listen on port 3000 for the HTTP server
-  httpServer.listen(3000, () => {
-    console.log('HTTP server listening on port 3000');
-  });
+  // Listen on the provided port for the HTTP server
+//   httpServer.listen(port, () => {
+//     console.log(`HTTP server listening on port ${port}`);
+//   });
 
   // Return both servers for external use
-  return { httpServer, webSocketServer };
+  return { webSocketServer };
 }
 
 module.exports = { createWebSocketProxy };
