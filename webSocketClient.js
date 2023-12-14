@@ -1,4 +1,3 @@
-
 console.log('Before WebSocket connection code');
 
 const WebSocket = require('ws');
@@ -47,4 +46,3 @@ function startWebSocketClient() {
   }
 
   module.exports = startWebSocketClient;
-

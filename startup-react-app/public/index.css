@@ -1,0 +1,104 @@
+/* main.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to bottom right, #ff8a00, #e52e71);
+    background-attachment: fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: white;
+  }
+  
+  header {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  nav menu {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  nav menu li {
+    margin-right: 20px;
+  }
+  
+  nav menu li a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  nav menu li a:hover {
+    border-bottom: 2px solid white;
+  }
+  
+  main {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  main h1 {
+    font-size: 2em;
+    margin-bottom: 10px;
+  }
+  
+  main p {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+  }
+  
+  main form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  main label {
+    font-size: 1.2em;
+    margin-bottom: 5px;
+  }
+  
+  main input {
+    width: 80%;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  main button {
+    padding: 10px 20px;
+    font-size: 1.2em;
+    background-color: white;
+    color: #e52e71;
+    border: none;
+    cursor: pointer;
+  }
+  
+  main button:hover {
+    background-color: #e52e71;
+    color: white;
+  }
+  
+  footer {
+    padding: 10px;
+    text-align: center;
+  }
+  
+  footer a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  footer a:hover {
+    text-decoration: underline;
+  }
+  
+  hr {
+    border: 1px solid white;
+    margin: 10px 0;
+  }

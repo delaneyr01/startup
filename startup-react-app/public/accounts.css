@@ -1,0 +1,68 @@
+/* main.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to bottom right, #ff8a00, #e52e71);
+    background-attachment: fixed; /* Ensures the background doesn't scroll */
+    background-size: cover; /* Covers the entire viewport */
+    background-repeat: no-repeat; /* No repeating of the background */
+    color: white;
+  }
+  /*Skej at the top left*/
+header {
+    background-color: transparent;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav menu {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav menu li {
+    margin-right: 20px;
+}
+
+/*menu at the top*/
+nav menu li a {
+    color: white;
+    text-decoration: none;
+}
+
+/* underlines pages when navigating*/
+nav menu li a:hover {
+    border-bottom: 2px solid white;
+}
+  
+  table {
+    width: 50%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  th {
+    background-color: transparent;
+  }
+  
+  a {
+    text-decoration: none;
+    color: white;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }

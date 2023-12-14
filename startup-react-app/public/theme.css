@@ -1,0 +1,78 @@
+/* theme.css */
+
+:root {
+    --theme-color: #ff8a00; /* Set your theme color here */
+  }
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to bottom right, var(--theme-color, #ff8a00), #e52e71);
+    background-attachment: fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: white;
+    height: 100vh;
+}
+  
+  header {
+    background-color: transparent;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: flex-start; /* Align to the top left */
+    align-items: center;
+  }
+  
+  nav menu {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  nav menu li {
+    margin-right: 20px;
+  }
+  
+  /*menu at the top*/
+  nav menu li a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  /* underlines pages when navigating*/
+  nav menu li a:hover {
+    border-bottom: 2px solid white;
+  }
+  
+  .container {
+    background: transparent;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+  }
+  
+  h1 {
+    margin-bottom: 20px;
+  }
+  
+  input[type="color"] {
+    width: 100px;
+    height: 100px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    font-size: 1.2em;
+    margin-top: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }

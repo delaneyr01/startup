@@ -1,0 +1,147 @@
+/* MonthView.css */
+
+/* Styles for all <th> elements */
+.month-view th {
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    background: none; /* Remove the background property */
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to bottom right, #ff8a00, #e52e71);
+}
+
+/* Skej at the top left */
+.month-view header {
+    background-color: transparent;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Styles for the navigation menu */
+.month-view nav menu {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.month-view nav menu li {
+    margin-right: 20px;
+}
+
+/* Styles for menu links */
+.month-view nav menu li a {
+    color: white;
+    text-decoration: none;
+}
+
+/* Styles for menu link hover effect */
+.month-view nav menu li a:hover {
+    border-bottom: 2px solid white;
+}
+
+/* Styles for the message container */
+.month-view #messageContainer {
+    background-color: transparent;
+    color: yellow;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+/* Styles for the calendar background */
+.month-view table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: transparent;
+}
+
+/* Styles for date numbers (td) */
+.month-view td {
+    width: 50px;
+    height: 50px;
+    color: white;
+    background-color: transparent;
+    transition: background-color 0.3s ease-in-out;
+    position: relative;
+}
+
+.month-view td:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.month-view td span {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+}
+
+/* Styles for the form container */
+.month-view .panel {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+/* Styles for the form elements */
+.month-view .form-group {
+    margin-bottom: 20px;
+}
+
+.month-view input[type="date"],
+.month-view input[type="text"],
+.month-view textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.month-view button {
+    width: 100%;
+    padding: 10px;
+    background-color: #337ab7;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.month-view button:hover {
+    background-color: #235a9e;
+}
+
+/* Styles for event blocks */
+.month-view .event-block {
+    display: inline-block;
+    background-color: white;
+    color: black;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.month-view .event-block:hover {
+    background-color: lightgray;
+}
+
+/* Styles for event description */
+.month-view .event-description {
+    display: none;
+}
+
+.month-view .event-description.active {
+    display: block;
+}
