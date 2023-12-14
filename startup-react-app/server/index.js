@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const { MongoClient } = require('mongodb');
 const bodyParser = require('body-parser');
 const { createWebSocketProxy } = require('./webSocketProxy'); 
@@ -12,6 +13,8 @@ app.use(express.static('public'));
 
 // The service port. In production the application is statically hosted by the service on the same port.
 const port = 4000;
+
+app.use(cors());
 
 app.use(bodyParser.json());
 
