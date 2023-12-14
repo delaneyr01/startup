@@ -1,5 +1,5 @@
 // MonthView.js
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './MonthView.css';
 
 const MonthView = () => {
@@ -122,7 +122,7 @@ const MonthView = () => {
                 try {
                     await addEventToDatabase(eventName, eventDescription, eventDate);
                     const event = {eventName, eventDescription, eventDate};
-                    currentEvents.appendChild(event);
+                    setCurrentEvents([...currentEvents, event]); //REACT TEST
                     alert('Event added successfully');
                     console.log('Event added successfully');
                 } catch (error) {
@@ -180,7 +180,7 @@ const MonthView = () => {
             console.log('Received user name:', receivedUserName);
       
             // Append the message to the message container
-            appendMessage(receivedEventName, receivedUsername);
+            appendMessage(receivedEventName, receivedUserName);
       
           } catch (error) {
             console.log('Received non-JSON message:', data);
@@ -302,10 +302,6 @@ const MonthView = () => {
         });
     
         sessionStorage.setItem('userEvents', JSON.stringify(storedEvents));
-    };
-
-    const getStoredEvents = () => {
-        return JSON.parse(sessionStorage.getItem('userEvents')) || [];  
     };
 
     const loadEventsFromLocalStorage = async () => {
