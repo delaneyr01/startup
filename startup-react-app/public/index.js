@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
 import ReactDOM from 'react-dom/client';
-import HomePage from './HomePage'; // Corrected the import path
-import MonthView from './MonthView';
-import './index.css';
+import HomePage from 'src/HomePage'; // Corrected the import path
+import MonthView from 'src/MonthView';
+import 'src/index.css';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
